@@ -1,0 +1,66 @@
+/**
+ * Class for basic arithmetic operations.
+ * Named in honor of Blaise Pascal.
+*/
+Object Pascal [
+    script add::nativeStruct(key n1, key n2) [
+            -- Function variables, %x refers to integer or decimal.
+            stash { %x result };
+
+            -- Instruction start
+            :i -> stash.result = native.n1 + native.n2;
+
+            -- Returns the value
+            puke -> stash.result;
+        ]
+
+    script sub::nativeStruct(key n1, key n2) [
+            -- Function variables
+            stash { %x result };
+
+            -- Instruction start
+            :i -> stash.result = native.n1 - native.n2;
+
+            -- Returns the value
+            puke -> stash.result;
+        ]
+
+    script mul::nativeStruct(key n1, key n2) [
+            stash { %x result };
+
+            :i -> stash.result = native.n1 * native.n2;
+
+            puke -> stash.result;
+        ]
+
+    script div::nativeStruct(key n1, key n2) [
+            stash { %x result };
+
+            :i -> stash.result = native.n1 / native.n2;
+
+            puke -> stash.result;
+        ]
+
+    script sqr::nativeStruct(key n1, key base?) [
+            stash { %x result, %i base };
+
+            -- Sets the default square value to two if is not set or is minor than two.
+            :i -> stash.base = native.base => (!native.base | native.base < 2): 2;
+            :i -> stash.result = native.n1 ** stash.base;
+
+            puke -> stash.result;
+        ]
+
+    script rt::nativeStruct(key n1, key base?) [
+            stash { %x result, %i base, %x value};
+
+            -- Calls the div function from Pascal class to calculate the decimal value.
+            :i -> stash.value = native.base => (!native.base | native.base < 2): 2;
+            :i -> stash.base = $.div(1, stash.value);
+
+            -- Executes the operation.
+            :i -> stash.result = native.n1 ** stash.base;
+
+            puke -> stash.result;
+        ]
+]
